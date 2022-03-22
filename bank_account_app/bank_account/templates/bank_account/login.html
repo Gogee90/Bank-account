@@ -1,0 +1,22 @@
+{% extends 'bank_account/index.html' %} {% block content %}
+<div class="login_form">
+  <h2 class="form_header">User account</h2>
+  <form method="post" action="{% url 'login_user' %}" id="login-form">
+    {% csrf_token %}
+    <ul>
+      <li>
+        <label for="id_username">Логин:</label>
+        <input type="text" name="username" maxlength="100" required="" id="id_username" />
+      </li>
+      <li>
+        <label for="id_password">Пароль:</label>
+        <input type="password" name="password" required="" id="id_password" />
+      </li>
+      <li><button type="submit">Войти</button></li>
+    </ul>
+    <div>
+      <p><a href="{% url 'user_create' %}">Don't have account yet? Go register!</a></p>
+    </div>
+  </form>
+</div>
+{% endblock %}

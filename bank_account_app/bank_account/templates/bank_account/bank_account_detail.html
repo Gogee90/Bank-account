@@ -1,0 +1,45 @@
+{% extends 'bank_account/index.html' %} {% block content %}
+<table>
+    <thead>
+        <tr>
+            <th>№</th>
+            <th>Owner</th>
+            <th>First name</th>
+            <th>Last name</th>
+            <th>Created at</th>
+            <th>Current amount of money</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ bank_account.id }}</td>
+            <td>{{ bank_account.owner }}</td>
+            <td>{{ bank_account.owner.first_name }}</td>
+            <td>{{ bank_account.owner.last_name }}</td>
+            <td>{{ bank_account.created_at }}</td>
+            <td>{{ bank_account.amount }} $</td>
+        </tr>
+        </a>
+    </tbody>
+</table>
+<p>Transactions</p>
+<table>
+    <thead>
+        <tr>
+            <th>Transaction ID</th>
+            <th>Recipient</th>
+            <th>Transacted amount of money</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in bank_account.transaction_set.all %}
+        <tr>
+            <td>{{ transaction.id }}</td>
+            <td>{{ transaction.recipient }}</td>
+            <td>{{ transaction.amount }}</td>
+        </tr>
+        {% endfor %}
+        </a>
+    </tbody>
+</table>
+{% endblock %}

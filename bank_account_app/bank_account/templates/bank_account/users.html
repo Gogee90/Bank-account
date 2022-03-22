@@ -1,0 +1,32 @@
+{% extends 'bank_account/index.html' %}
+
+{% block title %}Список счетов{%endblock%}
+
+{% block content %}
+
+<div class="row">
+    <form action="{% url 'list_users' %}">
+        <div class="col s3 offset-s9">
+            <label for="search">Search by user:</label>
+            <input type="text" id="search_term" name="search_term">
+            <input type="submit">
+        </div>
+    </form>
+    <table>
+        {% for user in users %}
+        <thead>
+            <tr>
+                <th>{{ user.username }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                {% for account in user.owner.all %}
+                <td>{{ account.amount }} <a href="{% url 'make_transaction' account.pk %}">Перевести на счёт</a></td>
+                {% endfor %}
+            </tr>
+        </tbody>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

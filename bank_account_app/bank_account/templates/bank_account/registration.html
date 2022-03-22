@@ -1,0 +1,12 @@
+{% extends 'bank_account/index.html' %} {% block content %}
+<h2 class="form_header">Register</h2>
+<form class="registration" method="post">
+  {% csrf_token %}
+  <ul>
+    {{ registration_form.as_ul }}
+    <li>
+      <button type="submit">Register</button>
+    </li>
+  </ul>
+</form>
+{% endblock %}

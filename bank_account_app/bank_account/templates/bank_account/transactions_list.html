@@ -1,0 +1,66 @@
+{% extends 'bank_account/index.html' %}
+
+{% block content %}
+<div class="row">
+    <form action="{% url 'list_transaction' %}">
+        <div class="col s3">
+            <label for="start_date">Start date:</label>
+            <input type="date" id="start_date" name="start_date">
+        </div>
+        <div class="col s3">
+            <label for="end_date">End date:</label>
+            <input type="date" id="end_date" name="end_date">
+        </div>
+        <div class="col s3">
+            <label for="amount">Amount:</label>
+            <input type="text" id="amount" name="amount">
+        </div>
+        <div class="col s3">
+            <label for="search">Search by bank account:</label>
+            <input type="text" id="search_term" name="search_term">
+        </div>
+        <input type="submit">
+    </form>
+</div>
+<table>
+    <thead>
+        <tr>
+            <th>Amount</th>
+            <th>Transaction Date</th>
+            <th>Bank accounts</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for transaction in page_obj %}
+        <tr>
+            <td>{{ transaction.amount }} $</td>
+            <td>{{ transaction.created_at }}</td>
+            <td>{% for bank_account in transaction.bank_account.all %}
+                <p>№: {{bank_account.id}}</p>
+                <p>Amount remaining: {{bank_account.amount}} $</p>
+                {% endfor %}
+            </td>
+            <td><a href="{% url 'transaction_detail' transaction.pk %}">See</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+        <a href="?page=1">&laquo; first</a>
+        <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">next</a>
+        <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endblock %}

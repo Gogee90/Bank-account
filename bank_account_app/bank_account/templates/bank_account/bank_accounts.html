@@ -1,0 +1,32 @@
+{% extends 'bank_account/index.html' %} {% block title %}Список
+счетов{%endblock%} {% block content %}
+
+<div class="row">
+    <table>
+        <thead>
+            <tr>
+                <th>№</th>
+                <th>Owner</th>
+                <th>First name</th>
+                <th>Last name</th>
+                <th>Created at</th>
+                <th>Current amount of money</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for bank_account in bank_accounts %}
+            <tr>
+                <td>{{ bank_account.id }}</td>
+                <td>{{ bank_account.owner }}</td>
+                <td>{{ bank_account.owner.first_name }}</td>
+                <td>{{ bank_account.owner.last_name }}</td>
+                <td>{{ bank_account.created_at }}</td>
+                <td>{{ bank_account.amount }} $</td>
+                <td><a href="{% url 'bank_account_detail' bank_account.pk %}">See</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="{% url 'create_bank_account' %}">Create bank account</a>
+</div>
+{% endblock %}
