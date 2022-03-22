@@ -56,7 +56,7 @@ def user_create(request):
 
 @login_required
 def list_users(request):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by("-id")
     if not request.user.is_anonymous:
         queryset = queryset.exclude(username=request.user.username)
     if request.GET.get("search_term"):
@@ -67,8 +67,11 @@ def list_users(request):
             | Q(first_name__icontains=search_term)
             | Q(last_name__icontains=search_term)
         )
+    paginator = Paginator(queryset, 10)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     context = {
-        "users": queryset,
+        "users": page_obj,
     }
     return render(request, "bank_account/users.html", context)
 
