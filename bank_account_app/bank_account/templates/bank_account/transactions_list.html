@@ -27,6 +27,7 @@
         <tr>
             <th>Amount</th>
             <th>Transaction Date</th>
+            <th>Status</th>
             <th>Bank accounts</th>
         </tr>
     </thead>
@@ -35,12 +36,18 @@
         <tr>
             <td>{{ transaction.amount }} $</td>
             <td>{{ transaction.created_at }}</td>
+            {% if transaction.status %}
+            <td>Passed</td>
+            {% else %}
+            <td>Cancelled</td>
+            {% endif %}
             <td>{% for bank_account in transaction.bank_account.all %}
                 <p>№: {{bank_account.id}}</p>
                 <p>Amount remaining: {{bank_account.amount}} $</p>
                 {% endfor %}
             </td>
             <td><a href="{% url 'transaction_detail' transaction.pk %}">See</a></td>
+            <td><a href="{% url 'cancel_transaction' transaction.pk %}">Cancel</a></td>
         </tr>
         {% endfor %}
     </tbody>

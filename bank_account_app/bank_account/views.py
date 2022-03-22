@@ -84,6 +84,7 @@ def make_transaction(request, pk):
             transaction.sender = current_user
             transaction.recipient = bank_account.owner
             transaction.amount = form.cleaned_data["amount"]
+            transaction.recipient_bank_account = bank_account
 
             if transaction.amount:
                 bank_account.amount += transaction.amount
@@ -103,6 +104,26 @@ def make_transaction(request, pk):
             return redirect("list_bank_accounts")
 
     return render(request, "bank_account/transaction_form.html", {"form": form})
+
+
+@login_required
+def cancel_transaction(request, pk):
+    transaction = get_object_or_404(Transaction, pk=pk)
+
+    returned_amount = transaction.amount / transaction.bank_account.all().count()
+
+    for bank_account in transaction.bank_account.all():
+        bank_account.amount += returned_amount
+        bank_account.save()
+
+    if transaction.recipient_bank_account:
+        transaction.recipient_bank_account.amount -= transaction.amount
+        transaction.recipient_bank_account.save()
+
+    transaction.status = False
+    transaction.amount -= transaction.amount
+    transaction.save()
+    return redirect("list_transaction")
 
 
 @login_required

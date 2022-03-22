@@ -42,10 +42,19 @@ class Transaction(models.Model):
         blank=True,
         on_delete=models.SET_NULL,
     )
+    recipient_bank_account = models.ForeignKey(
+        BankAccount,
+        related_name="recipient_bank_account",
+        verbose_name="Recipient bank account",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+    )
     bank_account = models.ManyToManyField(
         BankAccount, blank=True, verbose_name="Bank Account"
     )
     amount = models.FloatField(verbose_name="Amount", default=0, null=True, blank=True)
+    status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:
